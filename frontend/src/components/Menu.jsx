@@ -1,33 +1,41 @@
-import React from 'react';
+import { useNavigate } from 'react-router-dom';
 
-const Menu = ({ onStartGame, onShowInstructions }) => {
+function Menu() {
+  const navigate = useNavigate();
+  //const desc = "Play Codenames against an AI";
+
+  const handlePlayClick = () => {
+    navigate('/play'); 
+  };
+
+  const handleRulesClick = () => {
+    navigate('/rules');
+  };
+
   return (
-    <div className="min-h-screen flex flex-col justify-center items-center bg-gradient-to-br from-blue-900 to-purple-900 text-white">
-      <h1 className="text-5xl font-extrabold mb-8 text-center drop-shadow-md">
-        AI Codenames
-      </h1>
+    <div className="min-h-screen flex flex-col justify-center items-center bg-gray-900 text-white text-center px-4">
+      <h1 className="text-7xl font-bold mb-5">Codenames</h1>
+      
+      <p className="mb-6">Play Codenames against an AI</p>
 
-      <div className="flex flex-col gap-4">
+      <div className="flex gap-4">
         <button
-          onClick={onStartGame}
-          className="px-8 py-3 bg-green-500 hover:bg-green-600 rounded-xl text-lg font-semibold transition-all duration-300"
+          type="button"
+          onClick={handlePlayClick}
+          className="bg-green-500 hover:bg-green-600 px-6 py-2 rounded-lg font-semibold"
         >
-          Start Game
+          Play
         </button>
-
         <button
-          onClick={onShowInstructions}
-          className="px-8 py-3 bg-yellow-400 hover:bg-yellow-500 text-black rounded-xl text-lg font-semibold transition-all duration-300"
+          type="button"
+          onClick={handleRulesClick}
+          className="bg-yellow-400 hover:bg-yellow-500 text-black px-6 py-2 rounded-lg font-semibold"
         >
-          How to Play
+          Rules
         </button>
       </div>
-
-      <footer className="absolute bottom-4 text-sm text-gray-300">
-        Play codenames against an AI
-      </footer>
     </div>
   );
-};
+}
 
 export default Menu;
