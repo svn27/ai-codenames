@@ -5,30 +5,17 @@ function Menu() {
   const desc = "Play Codenames against an AI";
 
   const handlePlayClick = () => {
-    navigate('/play'); // navigates to /log route
+    navigate('/play'); 
   };
 
   const handleRulesClick = () => {
-    navigate('/rules'); // navigates to /log route
+    navigate('/rules');
   };
-
-  /*
-  return (
-    <>
-      <h1>Codenames</h1>
-      <h2>Welcome to Codenames</h2>
-      <p>{desc}</p>
-      <button type="button" onClick={handlePlayClick}>Play</button>
-      <button type="button" onClick={handleRulesClick}>Rules</button>
-
-    </>
-  );
-  */
 
   return (
     <div className="min-h-screen flex flex-col justify-center items-center bg-gray-900 text-white text-center px-4">
-      <h1 className="text-5xl font-bold mb-4">Codenames</h1>
-      <h2 className="text-2xl font-semibold mb-2">Welcome to Codenames</h2>
+      <h1 className="text-5xl font-bold mb-5">Codenames</h1>
+      
       <p className="mb-6">{desc}</p>
 
       <div className="flex gap-4">
