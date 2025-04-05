@@ -45,7 +45,7 @@ class GameState(BaseModel):
         """Update goes for the operative in the spy master team"""
         active_team = self._get_team()
         active_team.spy_master.word = spy_master_word
-        active_team.operative.goes = goes
+        active_team.operative.goes = goes + 1
     
     def operative(self, guess: str):
         active_team = self.get_active_team()
@@ -60,7 +60,7 @@ class GameState(BaseModel):
                 self.current_team_name = opposition_team.name
             
         elif board_word.role == opposition_team.name: 
-            self.check_winner(active_team)
+            self.check_winner(opposition_team)
             self.current_team_name = opposition_team.name
             
         elif board_word.role == "neutral":
