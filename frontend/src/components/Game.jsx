@@ -26,7 +26,7 @@ export default function Game() {
         });
       
         return wordMap;
-      }
+    }
     
       
     const wordMap = generateWordMap(allWords);
@@ -56,10 +56,12 @@ export default function Game() {
         if (colour === "blue") {
           setClueNumber(clueNumber - 1);
           if (clueNumber === 1){
+            setClueNumber(1);
             setCurrentTurn("ai-spymaster");
           }
         } else if (colour === "red" || colour === "yellow") {
           // End turn
+          setClueNumber(1);
           setCurrentTurn("ai-spymaster");
         }
         else {
