@@ -9,7 +9,8 @@ import random
 model = api.load("glove-wiki-gigaword-100")
 
 
-def ai_spymaster(ai_words: list[str]):
+def ai_spymaster(board, ai_words, l=0.5):
+    other_words = list(set(board) - set(ai_words))
     main_word = random.choice(
         ai_words
     )  # Selecting an arbitrary word to main for the round
@@ -39,9 +40,22 @@ def ai_spymaster(ai_words: list[str]):
             ai_words_vecs.append(model[word])
         else:
             print("How the hell does this dataset not have the word", word + "?!")
+            
+    other_word_vecs = []
+    
+    for word in other_words:
+        if word in model:
+            other_word_vecs.append(model[word])
+        else:
+            print("How the hell does this dataset not have the word", word + "?!")
 
     average_vector = np.mean(ai_words_vecs, axis=0)
-    optimal_words = model.similar_by_vector(average_vector, topn=len(ai_words) + 1)
+    average_bad_vector = np.mean(other_word_vecs, axis=0)
+
+    overall_vector = average_vector - (l * average_bad_vector)
+    
+    optimal_words = model.similar_by_vector(overall_vector, topn=len(ai_words) + 1)
+    
     print(optimal_words)
 
     for word, _ in optimal_words:
@@ -62,18 +76,34 @@ def ai_guesser(board, guess_word, n):
 
     return keys[0:n]
 
+boards = ['PHOENIX',
+'SERVER',
+'CASTLE',
+'HALLOWEEN',
+'OLIVE',
+'TRACK',
+'SWEAT',
+'BATTLE',
+'MUMMY',
+'MAP',
+'GOLF',
+'WEREWOLF',
+'CROW',
+'BOLT',
+'LAUNDRY',
+'DRYER',
+'BOIL',
+'COUNTRY',
+'EGYPT',
+'FRANCE',
+'COCONUT',
+'SWAMP',
+'BUG',
+'PUPPET',
+'SCARECROW']
+boards = [word.lower() for word in boards]
+ai_words = ["halloween", "puppet", "sweat", "egypt", "scarecrow", "france", "bug", "castle"]
 
-ai_words = [
-    "pool",
-    "day",
-    "orange",
-    "joker",
-    "bark",
-    "glacier",
-    "kick",
-    "flood",
-    "forest",
-]
-ai_words2 = ["beach", "sun"]
-
-print(ai_spymaster(ai_words))
+first_word, first_n = ai_spymaster(boards, ai_words, 1)
+print(first_word, first_n)
+print(ai_guesser(boards, first_word, first_n))
