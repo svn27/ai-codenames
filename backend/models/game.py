@@ -7,13 +7,9 @@ class BoardWord(BaseModel):
     word: str
     used: bool = False
     role: Literal["red", "blue", "neutral", "assassin"]
-
-
-class Board(BaseModel):
-    words: List[BoardWord]
     
 class GameState(BaseModel):
-    board: Board
+    board_words: List[BoardWord]
     red_team: Team 
     blue_team: Team
     current_team_name: Literal["red", "blue"]
@@ -29,11 +25,11 @@ class GameState(BaseModel):
     
     def get_remaining_words(self, team: Team):
         """Returns the unused words for the given team"""
-        return [word for word in self.board.words if word.role == team.name and not word.used]
+        return [word for word in self.board_words if word.role == team.name and not word.used]
     
     def get_words(self, team: Team):
         """Returns all the words for the given team"""
-        return [word for word in self.board.words if word.role == team.name]
+        return [word for word in self.board_words if word.role == team.name]
     
     def check_winner(self, team: Team):
         remaining_words = self.get_remaining_words(team)
@@ -50,7 +46,7 @@ class GameState(BaseModel):
     def operative(self, guess: str):
         active_team = self.get_active_team()
         opposition_team = self.get_opposition_team()
-        board_word = next((w for w in self.board.words if w.word == guess))
+        board_word = next((w for w in self.board_words if w.word == guess))
         
         board_word.used = True
         if board_word.role == active_team.name: 

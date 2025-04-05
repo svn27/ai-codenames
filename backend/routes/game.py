@@ -17,8 +17,8 @@ def get_new_game():
 @router.post(f"{start_url}/get_ai_spymaster")
 def get_ai_spymaster(game_state: GameState):
     """Returns the ai spymaster word and goes"""
-    board = [word.word for word in game_state.board.words]
-    ai_words = [word.word for word in game_state.get_active_team().spy_master.words]
+    board = [word.word for word in game_state.board_words]
+    ai_words = [word.word for word in game_state.board_words if word.role == game_state.get_active_team().name and not word.used]
     
     spymaster_word, goes = ai_spymaster(board, ai_words)
     
@@ -28,7 +28,7 @@ def get_ai_spymaster(game_state: GameState):
 @router.post(f"{start_url}/get_ai_guesses")
 def get_ai_guesses(game_state: GameState, spymaster_word: str, goes: int):
     """Returns the ai guesses"""
-    board = [word.word for word in game_state.board.words]
+    board = [word.word for word in game_state.board_words]
     
     guesses = ai_guesser(board, spymaster_word, goes)
     
