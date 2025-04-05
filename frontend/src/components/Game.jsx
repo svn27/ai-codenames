@@ -58,9 +58,10 @@ export default function Game() {
       
         if (colour === "blue") {
             setClueNumber(clueNumber - 1);
-            setBlues(blues + 1);
+            const newBlues = blues + 1;
+            setBlues(newBlues);
 
-            if (blues === 9){
+            if (newBlues === 9) {
                 setWinner("You");
                 setCurrentTurn("over");
                 return;
@@ -73,9 +74,10 @@ export default function Game() {
           // End turn
 
             if (colour === "red"){
-                setReds(reds + 1);
+                const newReds = reds + 1;
+                setReds(newReds);
 
-                if (reds === 9){
+                if (newReds === 9) {
                     setWinner("AI");
                     setCurrentTurn("over");
                     return;
