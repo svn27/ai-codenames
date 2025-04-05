@@ -20,7 +20,7 @@ export default function Game() {
             } catch (error) {
                 console.error("Failed to fetch:", error);
             }
-            const words = response.data.board.words;
+            const words = response.data.board_words;
             const newWordMap = Object.fromEntries(
               words.map(({ word, role }) => [word, role === "assassin" ? "black" : role])
             );
@@ -167,7 +167,7 @@ export default function Game() {
     else if (currentTurn === "ai-spymaster"){
         console.log(currentTurn)
 
-        
+
 
         return(
             <div className="min-h-screen flex flex-col justify-center items-center bg-gray-900 text-white text-center px-4">
