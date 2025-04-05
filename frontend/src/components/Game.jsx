@@ -60,7 +60,7 @@ export default function Game() {
         }
     }
       
-      
+    
     if (currentTurn === "human-spymaster"){
         return(
             <div className="min-h-screen flex flex-col justify-center items-center bg-gray-900 text-white text-center px-4">
@@ -118,6 +118,52 @@ export default function Game() {
                         colour={colour}
                         state={wordState[word]}
                         onClick={() => handleCardClick(word, colour)}
+                      />  
+                    ))}
+                </div>
+                
+                <p className="text-3xl font-bold mb-5">{"Clue: " + clue}</p>
+                <p className="text-3xl font-bold mb-10">{"Number of words: " + clueNumber}</p>
+
+            </div>
+        );
+    }
+
+    else if (currentTurn === "ai-spymaster"){
+        console.log(currentTurn)
+        return(
+            <div className="min-h-screen flex flex-col justify-center items-center bg-gray-900 text-white text-center px-4">
+                <h1 className="text-5xl font-bold mb-10">The AI Spymaster is choosing a word...</h1>
+    
+                <div className="grid grid-cols-5 gap-4 mb-10">
+                    {Object.entries(wordMap).map(([word, colour], i) => (
+                        <Card
+                        key={i}
+                        word={word}
+                        colour={colour}
+                        state={wordState[word]}
+                        onClick={() => setCurrentTurn("ai-operative")}
+                      />  
+                    ))}
+                </div>
+
+            </div>
+        );
+    }
+
+    else if (currentTurn === "ai-operative"){
+        return(
+            <div className="min-h-screen flex flex-col justify-center items-center bg-gray-900 text-white text-center px-4">
+                <h1 className="text-5xl font-bold mb-10">The AI Operative is guessing...</h1>
+    
+                <div className="grid grid-cols-5 gap-4 mb-10">
+                    {Object.entries(wordMap).map(([word, colour], i) => (
+                        <Card
+                        key={i}
+                        word={word}
+                        colour={colour}
+                        state={wordState[word]}
+                        onClick={() => setCurrentTurn("human-spymaster")}
                       />  
                     ))}
                 </div>
