@@ -3,7 +3,7 @@ export default function Card({ word, colour, state, onClick }) {
       blue: "bg-blue-600 hover:bg-blue-600",
       red: "bg-red-900 hover:bg-red-900",
       black: "bg-neutral-800 hover:bg-neutral-800",
-      yellow: "bg-yellow-500 hover:bg-yellow-500",
+      neutral: "bg-yellow-500 hover:bg-yellow-500",
       normal: "bg-gray-400 hover:bg-gray-300",
     };
 
