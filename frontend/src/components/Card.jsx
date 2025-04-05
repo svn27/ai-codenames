@@ -1,8 +1,8 @@
 export default function Card({ word, colour }) {
     const bgClassMap = {
-      blue: "bg-cyan-400 hover:bg-cyan-500",
-      red: "bg-red-700 hover:bg-red-800",
-      black: "bg-neutral-800 hover:bg-neutral-900",
+      blue: "bg-blue-600 hover:bg-blue-600",
+      red: "bg-red-900 hover:bg-red-900",
+      black: "bg-neutral-800 hover:bg-neutral-800",
       normal: "bg-gray-400 hover:bg-gray-400",
     };
   

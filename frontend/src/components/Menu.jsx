@@ -2,7 +2,7 @@ import { useNavigate } from 'react-router-dom';
 
 function Menu() {
   const navigate = useNavigate();
-  const desc = "Play Codenames against an AI";
+  //const desc = "Play Codenames against an AI";
 
   const handlePlayClick = () => {
     navigate('/play'); 
@@ -14,9 +14,9 @@ function Menu() {
 
   return (
     <div className="min-h-screen flex flex-col justify-center items-center bg-gray-900 text-white text-center px-4">
-      <h1 className="text-5xl font-bold mb-5">Codenames</h1>
+      <h1 className="text-7xl font-bold mb-5">Codenames</h1>
       
-      <p className="mb-6">{desc}</p>
+      <p className="mb-6">Play Codenames against an AI</p>
 
       <div className="flex gap-4">
         <button
