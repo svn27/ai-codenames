@@ -5,6 +5,9 @@ import { useState } from 'react';
 export default function Game() {
 
     const navigate = useNavigate();
+    const handleMenuClick = () => {
+        navigate('/menu');
+    };
     
     const allWords = [
         "apple", "banana", "cherry", "dog", "elephant", "frog", "guitar", "house", "ice", "jungle",
@@ -19,7 +22,7 @@ export default function Game() {
           if (index < 9) wordMap[word] = "blue";
           else if (index < 18) wordMap[word] = "red";
           else if (index === 18) wordMap[word] = "black";
-          else wordMap[word] = "normal";
+          else wordMap[word] = "yellow";
         });
       
         return wordMap;
@@ -35,6 +38,7 @@ export default function Game() {
     const [currentTurn, setCurrentTurn] = useState("human-spymaster");
     const [clue, setClue] = useState('');
     const [clueNumber, setClueNumber] = useState(1);
+    const [winner, setWinner] = useState("");
 
     function handleClueSubmit() {
         if (!clue.trim()) return;
@@ -54,9 +58,13 @@ export default function Game() {
           if (clueNumber === 1){
             setCurrentTurn("ai-spymaster");
           }
-        } else if (colour === "red" || colour === "normal") {
+        } else if (colour === "red" || colour === "yellow") {
           // End turn
           setCurrentTurn("ai-spymaster");
+        }
+        else {
+            setWinner("AI")
+            setCurrentTurn("over")
         }
     }
       
@@ -173,6 +181,24 @@ export default function Game() {
 
             </div>
         );
+    }
+
+    else if (currentTurn === "over"){
+        return (
+            <div className="min-h-screen flex flex-col justify-center items-center bg-gray-900 text-white text-center px-4">
+              <h1 className="text-7xl font-bold mb-5">{winner + " wins!"}</h1>
+                      
+              <div className="flex gap-4">
+                <button
+                  type="button"
+                  onClick={handleMenuClick}
+                  className="bg-green-500 hover:bg-green-600 px-6 py-2 rounded-lg font-semibold"
+                >
+                  Return to menu
+                </button>
+              </div>
+            </div>
+          );
     }
 
     //print current turn if error
