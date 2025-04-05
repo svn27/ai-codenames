@@ -9,47 +9,32 @@ export default function Game() {
     const handleMenuClick = () => {
         navigate('/menu');
     };
+    const [wordMap, setWordMap] = useState({});
+    const [wordState, setWordState] = useState({});
 
     useEffect(() => {
         async function fetchData() {
-          const url = "http://127.0.0.1:8000/game/";
-          try {
-            const response = await axios.get(url + "get_new_game");
-            console.log(response.data);
-          } catch (err) {
-            console.error("Failed to fetch:", err);
-          }
+            try {
+                var response = await axios.get("http://127.0.0.1:8000/game/get_new_game");
+                console.log(response.data); // use the data to populate your board
+            } catch (error) {
+                console.error("Failed to fetch:", error);
+            }
+            const words = response.data.board.words;
+            const newWordMap = Object.fromEntries(
+              words.map(({ word, role }) => [word, role === "assassin" ? "black" : role])
+            );
+            
+            const newWordState = Object.fromEntries(
+              words.map(({ word }) => [word, false])
+            );
+            
+            setWordMap(newWordMap);
+            setWordState(newWordState);            
         }   
       
         fetchData();
     }, []);
-
-
-    
-    const allWords = [
-        "apple", "banana", "cherry", "dog", "elephant", "frog", "guitar", "house", "ice", "jungle",
-        "kite", "lemon", "mountain", "notebook", "ocean", "pencil", "queen", "river", "sun", "tree",
-        "umbrella", "violin", "whale", "xylophone", "zebra"
-    ];
-      
-    function generateWordMap(words) {
-        const wordMap = {};
-      
-        words.forEach((word, index) => {
-          if (index < 9) wordMap[word] = "blue";
-          else if (index < 18) wordMap[word] = "red";
-          else if (index === 18) wordMap[word] = "black";
-          else wordMap[word] = "yellow";
-        });
-      
-        return wordMap;
-    }
-    
-      
-    const wordMap = generateWordMap(allWords);
-    const [wordState, setWordState] = useState(() =>
-        Object.fromEntries(allWords.map(word => [word, false]))
-    );
 
 
     const [currentTurn, setCurrentTurn] = useState("human-spymaster");
@@ -87,7 +72,7 @@ export default function Game() {
                 setClueNumber(1);
                 setCurrentTurn("ai-spymaster");
           }
-        } else if (colour === "red" || colour === "yellow") {
+        } else if (colour === "red" || colour === "neutral") {
           // End turn
 
             if (colour === "red"){
@@ -181,6 +166,9 @@ export default function Game() {
 
     else if (currentTurn === "ai-spymaster"){
         console.log(currentTurn)
+
+        
+
         return(
             <div className="min-h-screen flex flex-col justify-center items-center bg-gray-900 text-white text-center px-4">
                 <h1 className="text-5xl font-bold mb-10">The AI Spymaster is choosing a word...</h1>
