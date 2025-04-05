@@ -1,7 +1,7 @@
 from fastapi import APIRouter
 from fastapi.responses import JSONResponse
 from models import GameState
-from services import ai_spymaster, ai_guesser
+from services import ai_spymaster, ai_guesser, create_new_gamestate
 
 router = APIRouter()
 
@@ -9,7 +9,10 @@ start_url = ""
 
 @router.get(f"{start_url}/get_new_game", response_model=GameState)
 def get_new_game():
-    pass
+    """Returns a new game state"""
+    game_state = create_new_gamestate()
+    
+    return game_state
 
 @router.post(f"{start_url}/get_ai_spymaster")
 def get_ai_spymaster(game_state: GameState):
