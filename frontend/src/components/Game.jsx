@@ -1,6 +1,6 @@
 import { useNavigate } from 'react-router-dom';
 import Card from "./Card.jsx";
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import axios from 'axios';
 
 export default function Game() {
@@ -9,6 +9,22 @@ export default function Game() {
     const handleMenuClick = () => {
         navigate('/menu');
     };
+
+    useEffect(() => {
+        async function fetchData() {
+          const url = "http://127.0.0.1:8000/game/";
+          try {
+            const response = await axios.get(url + "get_new_game");
+            console.log(response.data);
+          } catch (err) {
+            console.error("Failed to fetch:", err);
+          }
+        }   
+      
+        fetchData();
+    }, []);
+
+
     
     const allWords = [
         "apple", "banana", "cherry", "dog", "elephant", "frog", "guitar", "house", "ice", "jungle",
