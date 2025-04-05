@@ -22,8 +22,6 @@ def create_new_gamestate():
 
     all_words = red_words + blue_words + neutral_words + black_word
     random.shuffle(all_words)
-
-    board = Board(words=all_words)
-    game_state = GameState(board=board, red_team=red_team, blue_team=blue_team, current_team_name="red")
+    game_state = GameState(board_words==all_words, red_team=red_team, blue_team=blue_team, current_team_name="red")
     
     return game_state
