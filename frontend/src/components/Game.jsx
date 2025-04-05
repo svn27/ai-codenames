@@ -24,9 +24,13 @@ export default function Game() {
       
         return wordMap;
       }
+    
       
     const wordMap = generateWordMap(allWords);
-    //console.log(wordMap);
+    const [wordState, setWordState] = useState(() =>
+        Object.fromEntries(allWords.map(word => [word, false]))
+      );
+
 
     const [currentTurn, setCurrentTurn] = useState("human-spymaster");
     const [clue, setClue] = useState('');
@@ -34,24 +38,37 @@ export default function Game() {
 
     function handleClueSubmit() {
         if (!clue.trim()) return;
-      
         console.log("Clue submitted:", clue, clueNumber);
-      
-        // Save or send the clue + number to state or server
-        // Then advance turn
-        //setClue('');
-        setClueNumber(1);
+        setClueNumber(clueNumber);
         setCurrentTurn('human-operative');
       }
+    
+    function handleCardClick(word, colour) {
+        if (wordState[word]) return; // already revealed
+      
+        // Reveal the word
+        setWordState(prev => ({ ...prev, [word]: true }));
+      
+        if (colour === "blue") {
+          setClueNumber(clueNumber - 1);
+          if (clueNumber === 1){
+            setCurrentTurn("ai-spymaster");
+          }
+        } else if (colour === "red" || colour === "normal") {
+          // End turn
+          setCurrentTurn("ai-spymaster");
+        }
+    }
+      
       
     if (currentTurn === "human-spymaster"){
         return(
             <div className="min-h-screen flex flex-col justify-center items-center bg-gray-900 text-white text-center px-4">
-                <h1 className="text-5xl font-bold mb-10">Give your operatives a clue</h1>
+                <h1 className="text-5xl font-bold mb-10">Give your Operatives a clue</h1>
     
                 <div className="grid grid-cols-5 gap-4 mb-10">
                     {Object.entries(wordMap).map(([word, colour], i) => (
-                        <Card key={i} word={word} colour={colour} />
+                        <Card key={i} word={word} colour={colour} state={true}/>
                     ))}
                 </div>
                 
@@ -86,20 +103,30 @@ export default function Game() {
             </div>
         );
     }
+    
 
     else if (currentTurn === "human-operative"){
         return(
             <div className="min-h-screen flex flex-col justify-center items-center bg-gray-900 text-white text-center px-4">
-                <h1 className="text-5xl font-bold mb-10">{"Clue: " + clue}</h1>
+                <h1 className="text-5xl font-bold mb-10">Select a word</h1>
     
                 <div className="grid grid-cols-5 gap-4 mb-10">
                     {Object.entries(wordMap).map(([word, colour], i) => (
-                        <Card key={i} word={word} colour={colour} />
+                        <Card
+                        key={i}
+                        word={word}
+                        colour={colour}
+                        state={wordState[word]}
+                        onClick={() => handleCardClick(word, colour)}
+                      />  
                     ))}
-                </div>   
+                </div>
+                
+                <p className="text-3xl font-bold mb-5">{"Clue: " + clue}</p>
+                <p className="text-3xl font-bold mb-10">{"Number of words: " + clueNumber}</p>
+
             </div>
         );
-
     }
 
     //print current turn if error
