@@ -3,11 +3,11 @@ from typing import Literal
 
 class Operative(BaseModel):
     name: str
-    goes: int
+    goes: int = 0
     
 class SpyMaster(BaseModel):
     name: str
-    word: str  # word that is given to the operative
+    word: str = "" # word that is given to the operative
     
     
 class Team(BaseModel):
