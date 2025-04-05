@@ -1,6 +1,7 @@
 import { useNavigate } from 'react-router-dom';
 import Card from "./Card.jsx";
 import { useState } from 'react';
+import axios from 'axios';
 
 export default function Game() {
 
