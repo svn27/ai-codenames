@@ -13,7 +13,7 @@ export default function Game() {
         "apple", "banana", "cherry", "dog", "elephant", "frog", "guitar", "house", "ice", "jungle",
         "kite", "lemon", "mountain", "notebook", "ocean", "pencil", "queen", "river", "sun", "tree",
         "umbrella", "violin", "whale", "xylophone", "zebra"
-      ];
+    ];
       
     function generateWordMap(words) {
         const wordMap = {};
@@ -32,20 +32,23 @@ export default function Game() {
     const wordMap = generateWordMap(allWords);
     const [wordState, setWordState] = useState(() =>
         Object.fromEntries(allWords.map(word => [word, false]))
-      );
+    );
 
 
     const [currentTurn, setCurrentTurn] = useState("human-spymaster");
     const [clue, setClue] = useState('');
     const [clueNumber, setClueNumber] = useState(1);
     const [winner, setWinner] = useState("");
+    const [blues, setBlues] = useState(0);
+    const [reds, setReds] = useState(0);
+
 
     function handleClueSubmit() {
         if (!clue.trim()) return;
         console.log("Clue submitted:", clue, clueNumber);
         setClueNumber(clueNumber);
         setCurrentTurn('human-operative');
-      }
+    }
     
     function handleCardClick(word, colour) {
         if (wordState[word]) return; // already revealed
@@ -54,19 +57,37 @@ export default function Game() {
         setWordState(prev => ({ ...prev, [word]: true }));
       
         if (colour === "blue") {
-          setClueNumber(clueNumber - 1);
-          if (clueNumber === 1){
-            setClueNumber(1);
-            setCurrentTurn("ai-spymaster");
+            setClueNumber(clueNumber - 1);
+            setBlues(blues + 1);
+
+            if (blues === 9){
+                setWinner("You");
+                setCurrentTurn("over");
+                return;
+            }
+            if (clueNumber === 1){
+                setClueNumber(1);
+                setCurrentTurn("ai-spymaster");
           }
         } else if (colour === "red" || colour === "yellow") {
           // End turn
-          setClueNumber(1);
-          setCurrentTurn("ai-spymaster");
+
+            if (colour === "red"){
+                setReds(reds + 1);
+
+                if (reds === 9){
+                    setWinner("AI");
+                    setCurrentTurn("over");
+                    return;
+                }
+            }
+
+            setClueNumber(1);
+            setCurrentTurn("ai-spymaster");
         }
         else {
-            setWinner("AI")
-            setCurrentTurn("over")
+            setWinner("AI");
+            setCurrentTurn("over");
         }
     }
       
@@ -200,7 +221,7 @@ export default function Game() {
                 </button>
               </div>
             </div>
-          );
+        );
     }
 
     //print current turn if error
