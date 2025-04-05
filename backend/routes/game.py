@@ -1,14 +1,45 @@
 from fastapi import APIRouter
 from fastapi.responses import JSONResponse
 from models import GameState
+from services import ai_spymaster, ai_guesser, create_new_gamestate
 
 router = APIRouter()
 
-start_url = "/shrix/and/his/spooky/rix"
+start_url = ""
 
-@router.get(f"{start_url}")
-def test():
-    return JSONResponse(content={"message": f"Rix, a handsome fellow was once possessed by a demon. He was a great spymaster, but now he is a mere operative. He is trying to get back his spymaster powers. Can you help him?"}) 
+@router.get(f"{start_url}/get_new_game", response_model=GameState)
+def get_new_game():
+    """Returns a new game state"""
+    game_state = create_new_gamestate()
+    
+    return game_state
+
+@router.post(f"{start_url}/get_ai_spymaster")
+def get_ai_spymaster(game_state: GameState):
+    """Returns the ai spymaster word and goes"""
+    board = [word.word for word in game_state.board.words]
+    ai_words = [word.word for word in game_state.get_active_team().spy_master.words]
+    
+    spymaster_word, goes = ai_spymaster(board, ai_words)
+    
+    response = {"spymaster_word": spymaster_word, "goes": goes}
+    return JSONResponse(content=response)
+    
+@router.post(f"{start_url}/get_ai_guesses")
+def get_ai_guesses(game_state: GameState, spymaster_word: str, goes: int):
+    """Returns the ai guesses"""
+    board = [word.word for word in game_state.board.words]
+    
+    guesses = ai_guesser(board, spymaster_word, goes)
+    
+    response = {"guesses": guesses}
+    return JSONResponse(content=response)
+
+@router.post(f"{start_url}/switch_active_team", response_model=GameState)
+def switch_active_team(game_state: GameState):
+    """Switches the active team"""
+    game_state.current_team_name = game_state.get_opposition_team().name
+    return game_state
 
 @router.post(f"{start_url}/get_score")
 def get_score(game_state: GameState):
