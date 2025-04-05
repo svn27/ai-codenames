@@ -1,6 +1,7 @@
 import gensim.downloader as api
 import numpy as np
 import random
+from typing import List, Tuple
 
 
 # model = api.load("word2vec-google-news-300")
@@ -9,11 +10,9 @@ import random
 model = api.load("glove-wiki-gigaword-100")
 
 
-def ai_spymaster(board, ai_words, l=0.5):
+def ai_spymaster(board: List[str], ai_words: List[str], l: float=0.75) -> Tuple[str, int]:
     other_words = list(set(board) - set(ai_words))
-    main_word = random.choice(
-        ai_words
-    )  # Selecting an arbitrary word to main for the round
+    main_word = random.choice(ai_words)  # Selecting an arbitrary word to main for the round
     print("Main word chosen was", main_word)
     ai_words_to_main_words_s = {}
 
@@ -65,45 +64,43 @@ def ai_spymaster(board, ai_words, l=0.5):
     return "Uh oh!"
 
 
-def ai_guesser(board, guess_word, n):
+def ai_guesser(board: List[str], guess_word: str, n: int) -> List[str]:
     s = {}
-
     for word in board:
         s[word] = model.similarity(guess_word, word)
 
     keys = list(s.keys())
     keys.sort(key=lambda x: s[x], reverse=True)
-
     return keys[0:n]
 
-boards = ['PHOENIX',
-'SERVER',
-'CASTLE',
-'HALLOWEEN',
-'OLIVE',
-'TRACK',
-'SWEAT',
-'BATTLE',
-'MUMMY',
-'MAP',
-'GOLF',
-'WEREWOLF',
-'CROW',
-'BOLT',
-'LAUNDRY',
-'DRYER',
-'BOIL',
-'COUNTRY',
-'EGYPT',
-'FRANCE',
-'COCONUT',
-'SWAMP',
-'BUG',
-'PUPPET',
-'SCARECROW']
-boards = [word.lower() for word in boards]
-ai_words = ["halloween", "puppet", "sweat", "egypt", "scarecrow", "france", "bug", "castle"]
+# boards = ['PHOENIX',
+# 'SERVER',
+# 'CASTLE',
+# 'HALLOWEEN',
+# 'OLIVE',
+# 'TRACK',
+# 'SWEAT',
+# 'BATTLE',
+# 'MUMMY',
+# 'MAP',
+# 'GOLF',
+# 'WEREWOLF',
+# 'CROW',
+# 'BOLT',
+# 'LAUNDRY',
+# 'DRYER',
+# 'BOIL',
+# 'COUNTRY',
+# 'EGYPT',
+# 'FRANCE',
+# 'COCONUT',
+# 'SWAMP',
+# 'BUG',
+# 'PUPPET',
+# 'SCARECROW']
+# boards = [word.lower() for word in boards]
+# ai_words = ["halloween", "puppet", "sweat", "egypt", "scarecrow", "france", "bug", "castle"]
 
-first_word, first_n = ai_spymaster(boards, ai_words, 1)
-print(first_word, first_n)
-print(ai_guesser(boards, first_word, first_n))
+# first_word, first_n = ai_spymaster(boards, ai_words, 0.759999999999999909927462830183637829203)
+# print(first_word, first_n)
+# print(ai_guesser(boards, first_word, first_n))
