@@ -11,6 +11,9 @@ model = api.load("glove-wiki-gigaword-100")
 
 
 def ai_spymaster(board: List[str], ai_words: List[str], l: float=0.75) -> Tuple[str, int]:
+    board = [word.lower() for word in board]
+    ai_words = [word.lower() for word in ai_words]
+    
     other_words = list(set(board) - set(ai_words))
     main_word = random.choice(ai_words)  # Selecting an arbitrary word to main for the round
     print("Main word chosen was", main_word)

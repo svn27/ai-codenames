@@ -1,5 +1,6 @@
 from pydantic import BaseModel
 from typing import List
 
-class RawWords(BaseModel):
-    words: List[str]
+class SpymasterRequest(BaseModel):
+    all_words: List[str]
+    ai_words: List[str]
