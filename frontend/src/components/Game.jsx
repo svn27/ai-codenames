@@ -82,8 +82,7 @@ export default function Game() {
         fetchAiClue();
       }, [currentTurn]);
       
-      //gpt rubbish starts here
-      useEffect(() => {
+    useEffect(() => {
         const fetchAiGuesses = async () => {
           if (
             currentTurn !== "ai-operative" ||
@@ -165,11 +164,10 @@ export default function Game() {
             setCurrentTurn("over");
           }
       
-        }, 1000); // 1 second delay
+        }, 3000); // 3 second delay
       
         return () => clearTimeout(timeout);
     }, [guessIndex, aiGuesses, currentTurn]);
-    //gpt rubbish ends here
       
 
     function handleClueSubmit() {
