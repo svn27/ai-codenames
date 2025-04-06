@@ -61,7 +61,7 @@ def ai_spymaster(board: List[str], ai_words: List[str], l: float=0.75) -> Tuple[
     print(optimal_words)
 
     for word, _ in optimal_words:
-        if word not in ai_words:
+        if word not in ai_words and not any(board_word in word for board_word in board):
             return (word, min(len(ai_words), 3))
 
     return "Uh oh!"
