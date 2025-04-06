@@ -35,15 +35,24 @@ def get_ai_spymaster(all_words: List[str], ai_words: List[str]):
     return JSONResponse(content=response)
 
     
-@router.post("/get_ai_guesses")
-def get_ai_guesses(game_state: GameState, spymaster_word: str, goes: int):
-    """Returns the ai guesses"""
-    board = [word.word for word in game_state.board_words]
+# @router.post("/get_ai_guesses")
+# def get_ai_guesses(game_state: GameState, spymaster_word: str, goes: int):
+#     """Returns the ai guesses"""
+#     board = [word.word for word in game_state.board_words]
     
-    guesses = ai_guesser(board, spymaster_word, goes)
+#     guesses = ai_guesser(board, spymaster_word, goes)
+    
+#     response = {"guesses": guesses}
+#     return JSONResponse(content=response)
+
+@router.post("/get_ai_guesses")
+def get_ai_guesses(all_words: List[str], spymaster_word: str, goes: int):
+    """Returns the ai guesses"""
+    guesses = ai_guesser(all_words, spymaster_word, goes)
     
     response = {"guesses": guesses}
     return JSONResponse(content=response)
+
 
 @router.post("/switch_active_team", response_model=GameState)
 def switch_active_team(game_state: GameState):
