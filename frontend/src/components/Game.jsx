@@ -45,6 +45,9 @@ export default function Game() {
     const [winner, setWinner] = useState("");
     const [blues, setBlues] = useState(0);
     const [reds, setReds] = useState(0);
+    const [aiGuesses, setAiGuesses] = useState([]);
+    const [guessIndex, setGuessIndex] = useState(0);
+
 
     useEffect(() => {
         const fetchAiClue = async () => {
@@ -79,7 +82,7 @@ export default function Game() {
         fetchAiClue();
       }, [currentTurn]);
       
-    useEffect(() => {
+      useEffect(() => {
         const fetchAiGuesses = async () => {
           if (
             currentTurn !== "ai-operative" ||
@@ -88,10 +91,9 @@ export default function Game() {
             Object.keys(wordState).length === 0
           ) return;
       
-          const allWords = Object.keys(wordMap);
-          const unflippedWords = allWords.filter(word => !wordState[word]);
-      
           try {
+            const unflippedWords = Object.keys(wordMap).filter(word => !wordState[word]);
+      
             const response = await axios.post("http://127.0.0.1:8000/game/get_ai_guesses", {
               all_words: unflippedWords,
               spymaster_word: clue,
@@ -99,46 +101,8 @@ export default function Game() {
             });
       
             const guesses = response.data.guesses;
-      
-            console.log("AI guesses:", guesses);
-      
-            let guessesLeft = clueNumber;
-      
-            for (let guess of guesses) {
-              // Simulate delay per guess
-              await new Promise(resolve => setTimeout(resolve, 1000));
-      
-              const colour = wordMap[guess];
-              setWordState(prev => ({ ...prev, [guess]: true }));
-      
-              if (colour === "red") {
-                const newReds = reds + 1;
-                setReds(newReds);
-                guessesLeft--;
-      
-                if (newReds === 9) {
-                  setWinner("AI");
-                  setCurrentTurn("over");
-                  return;
-                }
-      
-                if (guessesLeft === 0) {
-                  setCurrentTurn("human-spymaster");
-                  return;
-                }
-              } else if (colour === "blue" || colour === "neutral") {
-                setCurrentTurn("human-spymaster");
-                return;
-              } else if (colour === "black") {
-                setWinner("You");
-                setCurrentTurn("over");
-                return;
-              }
-            }
-      
-            // Fallback in case guesses don't reach turn change
-            setCurrentTurn("human-spymaster");
-      
+            setAiGuesses(guesses);
+            setGuessIndex(0);
           } catch (error) {
             console.error("AI Operative error:", error);
           }
@@ -146,6 +110,64 @@ export default function Game() {
       
         fetchAiGuesses();
     }, [currentTurn]);
+      
+    useEffect(() => {
+        if (
+          currentTurn !== "ai-operative" ||
+          guessIndex >= aiGuesses.length
+        ) return;
+        console.log("AI guesses:", aiGuesses);
+
+      
+        const guess = aiGuesses[guessIndex];
+        const colour = wordMap[guess];
+      
+        const timeout = setTimeout(() => {
+          setWordState(prev => ({ ...prev, [guess]: true }));
+      
+          if (colour === "red") {
+            const newReds = reds + 1;
+            setReds(newReds);
+      
+            if (newReds === 9) {
+              setWinner("AI");
+              setCurrentTurn("over");
+              return;
+            }
+      
+            if (colour === "red") {
+                const newReds = reds + 1;
+                setReds(newReds);
+              
+                if (newReds === 9) {
+                  setWinner("AI");
+                  setCurrentTurn("over");
+                  return;
+                }
+              
+                if (guessIndex + 1 < clueNumber) {
+                  setGuessIndex(prev => prev + 1);
+                } else {
+                  setCurrentTurn("human-spymaster");
+                }
+              } else {
+                // Reveal wrong card, end turn
+                setCurrentTurn("human-spymaster");
+              }
+              
+      
+          } else if (colour === "blue" || colour === "neutral") {
+            setCurrentTurn("human-spymaster");
+          } else if (colour === "black") {
+            setWinner("You");
+            setCurrentTurn("over");
+          }
+      
+        }, 1000); // 1 second delay
+      
+        return () => clearTimeout(timeout);
+    }, [guessIndex, aiGuesses, currentTurn]);
+      
       
 
     function handleClueSubmit() {
