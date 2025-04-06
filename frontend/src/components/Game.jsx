@@ -66,7 +66,11 @@ export default function Game() {
             const { spymaster_word, goes } = response.data;
             setClue(spymaster_word);
             setClueNumber(goes);
-            setCurrentTurn("ai-operative");
+            
+            setTimeout(() => {
+                setCurrentTurn("ai-operative");
+            }, 3000); // 3000ms = 3 seconds
+
           } catch (error) {
             console.error("AI Spymaster error:", error);
           }
