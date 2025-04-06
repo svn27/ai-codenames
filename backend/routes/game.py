@@ -1,6 +1,6 @@
 from fastapi import APIRouter, Form
 from fastapi.responses import JSONResponse
-from models import GameState, SpymasterRequest
+from models import GameState, SpymasterRequest, OperatorRequest
 from services import ai_spymaster, ai_guesser, create_new_gamestate
 from typing import List
 
@@ -46,12 +46,20 @@ def get_ai_spymaster(data: SpymasterRequest):
 #     return JSONResponse(content=response)
 
 @router.post("/get_ai_guesses")
-def get_ai_guesses(all_words: List[str], spymaster_word: str, goes: int):
+def get_ai_guesses(data: OperatorRequest):
     """Returns the ai guesses"""
-    guesses = ai_guesser(all_words, spymaster_word, goes)
+    guesses = ai_guesser(data.all_words, data.spymaster_word, data.goes)
     
     response = {"guesses": guesses}
     return JSONResponse(content=response)
+
+
+
+
+
+
+
+
 
 
 @router.post("/switch_active_team", response_model=GameState)
