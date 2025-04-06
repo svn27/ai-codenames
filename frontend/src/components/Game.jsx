@@ -79,7 +79,74 @@ export default function Game() {
         fetchAiClue();
       }, [currentTurn]);
       
-
+    useEffect(() => {
+        const fetchAiGuesses = async () => {
+          if (
+            currentTurn !== "ai-operative" ||
+            !clue ||
+            Object.keys(wordMap).length === 0 ||
+            Object.keys(wordState).length === 0
+          ) return;
+      
+          const allWords = Object.keys(wordMap);
+          const unflippedWords = allWords.filter(word => !wordState[word]);
+      
+          try {
+            const response = await axios.post("http://127.0.0.1:8000/game/get_ai_guesses", {
+              all_words: unflippedWords,
+              spymaster_word: clue,
+              goes: clueNumber
+            });
+      
+            const guesses = response.data.guesses;
+      
+            console.log("AI guesses:", guesses);
+      
+            let guessesLeft = clueNumber;
+      
+            for (let guess of guesses) {
+              // Simulate delay per guess
+              await new Promise(resolve => setTimeout(resolve, 1000));
+      
+              const colour = wordMap[guess];
+              setWordState(prev => ({ ...prev, [guess]: true }));
+      
+              if (colour === "red") {
+                const newReds = reds + 1;
+                setReds(newReds);
+                guessesLeft--;
+      
+                if (newReds === 9) {
+                  setWinner("AI");
+                  setCurrentTurn("over");
+                  return;
+                }
+      
+                if (guessesLeft === 0) {
+                  setCurrentTurn("human-spymaster");
+                  return;
+                }
+              } else if (colour === "blue" || colour === "neutral") {
+                setCurrentTurn("human-spymaster");
+                return;
+              } else if (colour === "black") {
+                setWinner("You");
+                setCurrentTurn("over");
+                return;
+              }
+            }
+      
+            // Fallback in case guesses don't reach turn change
+            setCurrentTurn("human-spymaster");
+      
+          } catch (error) {
+            console.error("AI Operative error:", error);
+          }
+        };
+      
+        fetchAiGuesses();
+    }, [currentTurn]);
+      
 
     function handleClueSubmit() {
         if (!clue.trim()) return;
