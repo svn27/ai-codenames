@@ -197,13 +197,6 @@ export default function Game() {
     }
 
     else if (currentTurn === "ai-spymaster"){
-        // List of all words on the board
-        //const allWords = Object.keys(wordMap);
-        // List of all red words
-        //const redWords = allWords.filter(word => wordMap[word] === "red");
-        //filter for unflipped words
-        //const unflippedWords = allWords.filter(word => !wordState[word]);
-        //const redUnflippedWords = unflippedWords.filter(word => wordMap[word] === "red");
 
         return(
             <div className="min-h-screen flex flex-col justify-center items-center bg-gray-900 text-white text-center px-4">
