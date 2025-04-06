@@ -192,7 +192,7 @@ export default function Game() {
             const newBlues = blues + 1;
             setBlues(newBlues);
 
-            if (newBlues === 9) {
+            if (newBlues === 8) {
                 setWinner("You");
                 setCurrentTurn("over");
                 return;
