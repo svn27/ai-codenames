@@ -46,6 +46,33 @@ export default function Game() {
     const [blues, setBlues] = useState(0);
     const [reds, setReds] = useState(0);
 
+    useEffect(() => {
+        const fetchAiClue = async () => {
+          if (currentTurn !== "ai-spymaster") return;
+      
+          const allWords = Object.keys(wordMap);
+          const unflippedWords = allWords.filter(word => !wordState[word]);
+          const redUnflippedWords = unflippedWords.filter(word => wordMap[word] === "red");
+      
+          try {
+            const response = await axios.post("http://127.0.0.1:8000/game/get_ai_spymaster", {
+              all_words: unflippedWords,
+              ai_words: redUnflippedWords
+            });
+      
+            const { spymaster_word, goes } = response.data;
+            setClue(spymaster_word);
+            setClueNumber(goes);
+            setCurrentTurn("ai-operative");
+          } catch (error) {
+            console.error("AI Spymaster error:", error);
+          }
+        };
+      
+        fetchAiClue();
+      }, [currentTurn]);
+      
+
 
     function handleClueSubmit() {
         if (!clue.trim()) return;
@@ -168,12 +195,12 @@ export default function Game() {
 
     else if (currentTurn === "ai-spymaster"){
         // List of all words on the board
-        const allWords = Object.keys(wordMap);
+        //const allWords = Object.keys(wordMap);
         // List of all red words
         //const redWords = allWords.filter(word => wordMap[word] === "red");
         //filter for unflipped words
-        const unflippedWords = allWords.filter(word => !wordState[word]);
-        const redUnflippedWords = unflippedWords.filter(word => wordMap[word] === "red");
+        //const unflippedWords = allWords.filter(word => !wordState[word]);
+        //const redUnflippedWords = unflippedWords.filter(word => wordMap[word] === "red");
 
         return(
             <div className="min-h-screen flex flex-col justify-center items-center bg-gray-900 text-white text-center px-4">
@@ -186,7 +213,7 @@ export default function Game() {
                         word={word}
                         colour={colour}
                         state={wordState[word]}
-                        onClick={() => setCurrentTurn("ai-operative")}
+                        onClick={null}
                       />  
                     ))}
                 </div>
