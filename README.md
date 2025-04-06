@@ -82,16 +82,6 @@ A classic word game **Codenames**, with an AI spin!
 
 ---
 
-## 🕹️ How to Play
-
-1. **Start the game** by selecting roles. Either the human player or AI can be the spymaster or operative.
-2. **AI Spymaster** gives a clue related to a group of words on the board.
-3. **AI Operative** tries to guess the words based on the clue. The board is updated after each guess.
-4. **Human player** takes turns either as the spymaster or operative, interacting with the AI.
-5. **The game ends** when all words have been correctly guessed or a team hits the "black" word, which ends the game.
-
----
-
 ## 📸 Screenshots / Demo
 
 <img width="981" alt="image" src="https://github.com/user-attachments/assets/8917613c-e57b-45ba-81e4-26710d4943d2" />
