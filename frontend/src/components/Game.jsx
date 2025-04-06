@@ -232,7 +232,7 @@ export default function Game() {
     
                 <div className="grid grid-cols-5 gap-4 mb-10">
                     {Object.entries(wordMap).map(([word, colour], i) => (
-                        <Card key={i} word={word} colour={colour} state={true}/>
+                        <Card key={i} word={wordState[word] ? "" : word} colour={colour} state={true}/>
                     ))}
                 </div>
                 
