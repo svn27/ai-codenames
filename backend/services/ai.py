@@ -68,6 +68,7 @@ def ai_spymaster(board: List[str], ai_words: List[str], l: float=0.75) -> Tuple[
 
 
 def ai_guesser(board: List[str], guess_word: str, n: int) -> List[str]:
+    board = [word.lower() for word in board]
     s = {}
     for word in board:
         s[word] = model.similarity(guess_word, word)
