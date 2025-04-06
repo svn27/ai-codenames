@@ -149,7 +149,10 @@ export default function Game() {
                 if (guessIndex + 1 < clueNumber) {
                   setGuessIndex(prev => prev + 1);
                 } else {
-                  setCurrentTurn("human-spymaster");
+                  //setCurrentTurn("human-spymaster");
+                  setTimeout(() => {
+                    setCurrentTurn("human-spymaster");
+                  }, 3000);
                 }
               } else {
                 // Reveal wrong card, end turn
@@ -327,7 +330,7 @@ export default function Game() {
                         word={word}
                         colour={colour}
                         state={wordState[word]}
-                        onClick={() => setCurrentTurn("human-spymaster")}
+                        onClick={null}
                       />  
                     ))}
                 </div>
