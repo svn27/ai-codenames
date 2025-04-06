@@ -1,6 +1,6 @@
-from fastapi import APIRouter
+from fastapi import APIRouter, Form
 from fastapi.responses import JSONResponse
-from models import GameState, RawWords
+from models import GameState, SpymasterRequest
 from services import ai_spymaster, ai_guesser, create_new_gamestate
 from typing import List
 
@@ -27,9 +27,9 @@ def get_new_game():
 #     return JSONResponse(content=response)
 
 @router.post("/get_ai_spymaster")
-def get_ai_spymaster(all_words: RawWords, ai_words: RawWords):
+def get_ai_spymaster(data: SpymasterRequest):
     """Returns the ai spymaster word and goes"""    
-    spymaster_word, goes = ai_spymaster(all_words, ai_words)
+    spymaster_word, goes = ai_spymaster(data.all_words, data.ai_words)
     
     response = {"spymaster_word": spymaster_word, "goes": goes}
     return JSONResponse(content=response)
@@ -46,7 +46,7 @@ def get_ai_spymaster(all_words: RawWords, ai_words: RawWords):
 #     return JSONResponse(content=response)
 
 @router.post("/get_ai_guesses")
-def get_ai_guesses(all_words: RawWords, spymaster_word: str, goes: int):
+def get_ai_guesses(all_words: List[str], spymaster_word: str, goes: int):
     """Returns the ai guesses"""
     guesses = ai_guesser(all_words, spymaster_word, goes)
     

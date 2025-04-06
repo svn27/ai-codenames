@@ -53,12 +53,15 @@ export default function Game() {
           const allWords = Object.keys(wordMap);
           const unflippedWords = allWords.filter(word => !wordState[word]);
           const redUnflippedWords = unflippedWords.filter(word => wordMap[word] === "red");
-      
+          const formData = {
+            all_words: ["blood", "vein", "love", "death", "apple"],
+            ai_words: ["blood", "vein"]
+          };
+
+          console.log(formData)
+
           try {
-            const response = await axios.post("http://127.0.0.1:8000/game/get_ai_spymaster", {
-              all_words: unflippedWords,
-              ai_words: redUnflippedWords
-            });
+            const response = await axios.post("http://127.0.0.1:8000/game/get_ai_spymaster", formData);
       
             const { spymaster_word, goes } = response.data;
             setClue(spymaster_word);
