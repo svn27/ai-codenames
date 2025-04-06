@@ -28,7 +28,7 @@ def ai_spymaster(board: List[str], ai_words: List[str], l: float=0.75) -> Tuple[
     elif len(ai_words) == 2:
         chosen_ai_words = [main_word, keys[0]]
     else:
-        chosen_ai_words[main_word]
+        chosen_ai_words = [main_word]
 
     ai_words_vecs = []
 
