@@ -82,6 +82,7 @@ export default function Game() {
         fetchAiClue();
       }, [currentTurn]);
       
+      //gpt rubbish starts here
       useEffect(() => {
         const fetchAiGuesses = async () => {
           if (
@@ -167,7 +168,7 @@ export default function Game() {
       
         return () => clearTimeout(timeout);
     }, [guessIndex, aiGuesses, currentTurn]);
-      
+    //gpt rubbish ends here
       
 
     function handleClueSubmit() {
