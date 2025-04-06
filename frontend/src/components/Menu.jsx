@@ -12,11 +12,13 @@ function Menu() {
     navigate('/rules');
   };
 
+  //<h1 className="text-7xl font-bold mb-5">CODENETICS</h1>
   return (
     <div className="min-h-screen flex flex-col justify-center items-center bg-gray-900 text-white text-center px-4">
-      <h1 className="text-7xl font-bold mb-5">Codenames</h1>
       
-      <p className="mb-6">Play Codenames against an AI</p>
+      <img src="/raw-removebg-preview.png" alt="Codenetics Logo" className="w-100 mb-0" />
+      
+      <p className="mb-5">Play Codenames against an AI</p>
 
       <div className="flex gap-4">
         <button
