@@ -11,11 +11,13 @@ export default function Game() {
     };
     const [wordMap, setWordMap] = useState({});
     const [wordState, setWordState] = useState({});
+    const [gameState, setGameState] = useState({});
 
     useEffect(() => {
         async function fetchData() {
             try {
                 var response = await axios.get("http://127.0.0.1:8000/game/get_new_game");
+                setGameState(response.data);
                 console.log(response.data); // use the data to populate your board
             } catch (error) {
                 console.error("Failed to fetch:", error);
