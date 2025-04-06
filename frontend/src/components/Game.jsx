@@ -117,9 +117,10 @@ export default function Game() {
           currentTurn !== "ai-operative" ||
           guessIndex >= aiGuesses.length
         ) return;
+        console.log(wordMap)
         console.log("AI guesses:", aiGuesses);
 
-      
+        
         const guess = aiGuesses[guessIndex];
         const colour = wordMap[guess];
       

@@ -75,7 +75,7 @@ def ai_guesser(board: List[str], guess_word: str, n: int) -> List[str]:
 
     keys = list(s.keys())
     keys.sort(key=lambda x: s[x], reverse=True)
-    return keys[0:n]
+    return [key.upper() for key in keys[0:n]]
 
 # boards = ['PHOENIX',
 # 'SERVER',
