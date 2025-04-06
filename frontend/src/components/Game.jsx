@@ -54,8 +54,8 @@ export default function Game() {
           const unflippedWords = allWords.filter(word => !wordState[word]);
           const redUnflippedWords = unflippedWords.filter(word => wordMap[word] === "red");
           const formData = {
-            all_words: ["blood", "vein", "love", "death", "apple"],
-            ai_words: ["blood", "vein"]
+            all_words: unflippedWords,
+            ai_words: redUnflippedWords
           };
 
           console.log(formData)
