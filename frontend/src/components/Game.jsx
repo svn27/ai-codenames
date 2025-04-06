@@ -155,14 +155,18 @@ export default function Game() {
                 // Reveal wrong card, end turn
                 setCurrentTurn("human-spymaster");
               }
-              
-      
-          } else if (colour === "blue" || colour === "neutral") {
-            setCurrentTurn("human-spymaster");
-          } else if (colour === "black") {
-            setWinner("You");
-            setCurrentTurn("over");
-          }
+            }
+            else if (colour === "blue" || colour === "neutral") {
+                setTimeout(() => {
+                  setCurrentTurn("human-spymaster");
+                }, 3000);
+            } else if (colour === "black") {
+                setTimeout(() => {
+                  setWinner("You");
+                  setCurrentTurn("over");
+                }, 3000);
+            }
+          
       
         }, 3000); // 3 second delay
       
